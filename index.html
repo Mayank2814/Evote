@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure E-Voting System</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <i class="fas fa-vote-yea"></i>
+            <h1>Secure E-Voting System</h1>
+            <p>Transparent • Verifiable • Secure</p>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('vote')">
+                <i class="fas fa-vote-yea"></i> Cast Vote
+            </button>
+            <button class="tab-btn" onclick="showTab('verify')">
+                <i class="fas fa-search"></i> Verify Vote
+            </button>
+            <button class="tab-btn" onclick="showTab('results')">
+                <i class="fas fa-chart-bar"></i> Live Results
+            </button>
+        </div>
+
+        <!-- Voting Tab -->
+        <div id="vote" class="tab-content active">
+            <div class="form-container">
+                <h2><i class="fas fa-user-plus"></i> Cast Your Vote</h2>
+                <form id="voteForm" class="enhanced-form">
+                    <div class="form-group">
+                        <label for="voterId">
+                            <i class="fas fa-id-card"></i> Voter ID Number
+                        </label>
+                        <input type="text" id="voterId" name="voterId" 
+                               pattern="[A-Z0-9]{8,12}" 
+                               placeholder="Enter your 8-12 digit Voter ID"
+                               required>
+                        <span class="error-message" id="voterIdError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="voterName">
+                            <i class="fas fa-user"></i> Full Name
+                        </label>
+                        <input type="text" id="voterName" name="voterName" 
+                               pattern="[A-Za-z\s]{3,50}"
+                               placeholder="Enter your full name"
+                               required>
+                        <span class="error-message" id="voterNameError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="voterEmail">
+                            <i class="fas fa-envelope"></i> Email Address
+                        </label>
+                        <input type="email" id="voterEmail" name="voterEmail" 
+                               placeholder="Enter your email address"
+                               required>
+                        <span class="error-message" id="voterEmailError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="constituency">
+                            <i class="fas fa-map-marker-alt"></i> Constituency
+                        </label>
+                        <select id="constituency" name="constituency" required>
+                            <option value="">Select your constituency</option>
+                            <option value="North Delhi">North Delhi</option>
+                            <option value="South Delhi">South Delhi</option>
+                            <option value="East Delhi">East Delhi</option>
+                            <option value="West Delhi">West Delhi</option>
+                            <option value="Central Delhi">Central Delhi</option>
+                        </select>
+                    </div>
+
+                    <div class="candidates-section">
+                        <label><i class="fas fa-users"></i> Select Your Candidate</label>
+                        <div class="candidates-grid">
+                            <div class="candidate-card" onclick="selectCandidate('candidate1')">
+                                <div class="candidate-avatar">
+                                    <i class="fas fa-user-tie"></i>
+                                </div>
+                                <h3>Rahul Sharma</h3>
+                                <p>Indian National Party</p>
+                                <div class="candidate-symbol">🌹</div>
+                                <input type="radio" name="candidate" value="candidate1" id="candidate1" required>
+                            </div>
+                            <div class="candidate-card" onclick="selectCandidate('candidate2')">
+                                <div class="candidate-avatar">
+                                    <i class="fas fa-user-tie"></i>
+                                </div>
+                                <h3>Priya Patel</h3>
+                                <p>Democratic Alliance</p>
+                                <div class="candidate-symbol">🕊️</div>
+                                <input type="radio" name="candidate" value="candidate2" id="candidate2" required>
+                            </div>
+                            <div class="candidate-card" onclick="selectCandidate('candidate3')">
+                                <div class="candidate-avatar">
+                                    <i class="fas fa-user-tie"></i>
+                                </div>
+                                <h3>Amit Kumar</h3>
+                                <p>People's Front</p>
+                                <div class="candidate-symbol">🌻</div>
+                                <input type="radio" name="candidate" value="candidate3" id="candidate3" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="confirmVote" required>
+                            <span class="checkmark"></span>
+                            I confirm that this vote represents my true choice and I have not been coerced
+                        </label>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i> Submit Vote
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Verification Tab -->
+        <div id="verify" class="tab-content">
+            <div class="form-container">
+                <h2><i class="fas fa-search"></i> Verify Your Vote</h2>
+                <form id="verifyForm" class="enhanced-form">
+                    <div class="form-group">
+                        <label for="verifyVoterId">
+                            <i class="fas fa-id-card"></i> Voter ID Number
+                        </label>
+                        <input type="text" id="verifyVoterId" name="verifyVoterId" 
+                               pattern="[A-Z0-9]{8,12}"
+                               placeholder="Enter your Voter ID to verify"
+                               required>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-search"></i> Verify Vote
+                    </button>
+                </form>
+                <div id="verificationResult" class="verification-result"></div>
+            </div>
+        </div>
+
+        <!-- Results Tab -->
+        <div id="results" class="tab-content">
+            <div class="results-container">
+                <h2><i class="fas fa-chart-bar"></i> Live Election Results</h2>
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="candidate-info">
+                            <div class="candidate-avatar">🌹</div>
+                            <h3>Rahul Sharma</h3>
+                            <p>Indian National Party</p>
+                        </div>
+                        <div class="vote-count">
+                            <span class="count" id="votes1">0</span>
+                            <span class="percentage" id="percent1">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" id="progress1" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="result-card">
+                        <div class="candidate-info">
+                            <div class="candidate-avatar">🕊️</div>
+                            <h3>Priya Patel</h3>
+                            <p>Democratic Alliance</p>
+                        </div>
+                        <div class="vote-count">
+                            <span class="count" id="votes2">0</span>
+                            <span class="percentage" id="percent2">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" id="progress2" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="result-card">
+                        <div class="candidate-info">
+                            <div class="candidate-avatar">🌻</div>
+                            <h3>Amit Kumar</h3>
+                            <p>People's Front</p>
+                        </div>
+                        <div class="vote-count">
+                            <span class="count" id="votes3">0</span>
+                            <span class="percentage" id="percent3">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" id="progress3" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="total-votes">
+                    <h3>Total Votes Cast: <span id="totalVotes">0</span></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 Secure E-Voting System. Built with transparency and security.</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
